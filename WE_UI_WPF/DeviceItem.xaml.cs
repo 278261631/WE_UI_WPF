@@ -26,11 +26,11 @@ namespace DVR_UI_WPF
         public DeviceItem(int index)
         {
             InitializeComponent();
-            this.textBlock_Index.Text = index.ToString(defaultIndex);
-            this.Width = 160;
-            this.Height = 60;
+            //this.textBlock_Index.Text = index.ToString(defaultIndex);
+            this.Width = 180;
+            this.Height = 26;
             this.textBlock_DeviceID.Text = defaultDeviceID;
-            this.textBlock_DevicePath.Text = defaultDevicePath;
+            //this.textBlock_DevicePath.Text = defaultDevicePath;
         }
 
         private bool isConnected = false;
@@ -42,7 +42,7 @@ namespace DVR_UI_WPF
                     if (!value)
                     {
                         this.textBlock_DeviceID.Text = defaultDeviceID;
-                        this.textBlock_DevicePath.Text = defaultDevicePath;
+                        //this.textBlock_DevicePath.Text = defaultDevicePath;
                     }
             }
         }
@@ -55,8 +55,13 @@ namespace DVR_UI_WPF
 
         public string DevicePath
         {
-            get { return this.textBlock_DevicePath.Text; }
-            set { this.textBlock_DevicePath.Text = value; }
+            get { 
+                //return this.textBlock_DevicePath.Text; 
+                return null; 
+            }
+            set { 
+                //this.textBlock_DevicePath.Text = value;
+            }
         }
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {

@@ -25,9 +25,12 @@ namespace DVR_UI_WPF
             {
                 DeviceItem di = new DeviceItem(i+1);
 
-                double marginLeft = (this.Width - 4 * di.Width) / 5;
-                di.Margin = new Thickness(marginLeft, 5, 0, 5);
-                di.Padding = new Thickness(0, 12, 0, 12);
+                //double marginLeft = (this.Width - 4 * di.Width) / 5;
+                //di.Margin = new Thickness(marginLeft, 5, 0, 5);
+                //di.Padding = new Thickness(0, 12, 0, 12);
+
+                di.HorizontalAlignment = HorizontalAlignment.Right;
+                di.DeviceID += di.DeviceID + i.ToString();
                 deviceListAllShow.Add(di);
             }
 			// 在此点下面插入创建对象所需的代码。
