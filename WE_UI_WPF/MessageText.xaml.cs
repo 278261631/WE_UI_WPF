@@ -29,7 +29,7 @@ namespace RecordView
             //get;
             set
             {
-                this.textBoxMessage.Foreground=value;
+                this.textBoxMessage.Foreground = value;
             }
         }
 
@@ -37,8 +37,8 @@ namespace RecordView
         {
             set
             {
-                this.textBoxMessage.Text = string.Empty;
-                this.textBoxMessage.Text = value;
+                this.textBoxMessage.Content = string.Empty;
+                this.textBoxMessage.Content = value;
             }
         }
 
@@ -46,6 +46,8 @@ namespace RecordView
         {
             TextColor = colorBrushArg;
             TextString= textArg;
+            this.MessageShow_BeginStoryboard1.Storyboard.Begin();
+            //this.textBoxMessage.TextInput
         }
     }
 }

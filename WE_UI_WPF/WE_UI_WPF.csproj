@@ -105,7 +105,7 @@
     <Resource Include="images\user_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Desktop\CommonUI\DeviceEntity\DeviceEntity\DeviceEntity.csproj">
+    <ProjectReference Include="..\..\..\..\Desktop\src\DeviceEntity\DeviceEntity\DeviceEntity.csproj">
       <Project>{2C6F5C19-611B-4642-AA48-BE5FFD69A0D6}</Project>
       <Name>DeviceEntity</Name>
     </ProjectReference>

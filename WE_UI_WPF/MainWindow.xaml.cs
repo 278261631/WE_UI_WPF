@@ -46,13 +46,21 @@ namespace DVR_UI_WPF
         {
             foreach (var item in deviceListAllShow)
             {
-                InsertDeviceItem(item);
+                //InsertDeviceItem(item);
             }
         }
 
-        private int InsertDeviceItem(DeviceItem di)
+        //private int InsertDeviceItem(DeviceItem di)
+        //private void InsertDeviceItem(DeviceItem di)
+        private void InsertDeviceItem(DeviceEntity de)
         {
-            return this.wrapPanel_DeviceList.Children.Add(di);
+            //return this.wrapPanel_DeviceList.Children.Add(di);
+            this.wrapPanel_DeviceList.Dispatcher.Invoke(new Action(() => {
+                DeviceItem di = new DeviceItem(0);
+                di.HorizontalAlignment = HorizontalAlignment.Right;
+                deviceListAllShow.Add(di);
+                this.wrapPanel_DeviceList.Children.Add(di);
+            }));
         }
 
         private void wrapPanel_DeviceList_TouchMove(object sender, TouchEventArgs e)
@@ -97,21 +105,30 @@ namespace DVR_UI_WPF
             //    this.deviceListAllShow[deviceIndex].IsConnected = true; 
             //}
 
-            DeviceItem di = new DeviceItem(0);
-            di.HorizontalAlignment = HorizontalAlignment.Right;
-            deviceListAllShow.Add(di);
-            InsertDeviceItem(di);
+            //DeviceItem di = new DeviceItem(0);
+            //di.HorizontalAlignment = HorizontalAlignment.Right;
+            //deviceListAllShow.Add(di);
+            //InsertDeviceItem(di);
 
+            //--- Check if Exist
+            //clone entity to own list
+            
+
+            InsertDeviceItem(device);
+            //初始化连接只显示连接实时信息
+            //不显示图形，知道设备初始访问结束才显示（获取ID 版本等 、 基本通信校验）
 
         }
 
 
-        public void deviceDisConnected(string deviceID, int deviceIndex, string devicePath)
+        public void deviceDisConnected(DeviceEntity device)
         {
-            if (deviceIndex>-1 && deviceIndex < deviceListAllShow.Count)
-            {
-                this.deviceListAllShow[deviceIndex].IsConnected = false;
-            }
+            //if (this.deviceListAllShow.)
+            //{
+            //    this.deviceListAllShow[deviceIndex].IsConnected = false;
+            //}
+
+
         }
 
 
@@ -122,27 +139,30 @@ namespace DVR_UI_WPF
             int rNum = rd.Next(-20, 50);
             //deviceConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
             rNum = rd.Next(-20, 50);
-            deviceDisConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
+            //deviceDisConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
         }
 
         public void ShowMessage(DeviceDetectorMessage messageArg)
         {
-            string textArg = string.Empty;
-            switch (messageArg)
-            {
-                case DeviceDetectorMessage.IPEndPointError:
-                    textArg = "IP地址错误";
-                    break;
-                case DeviceDetectorMessage.ConnectionError:
-                    textArg = "网络连接错误";
-                    break;
-                default:
-                    textArg = "未定义的错误";
-                    break;
-            }
-            //SolidColorBrush scb = Brushes.Black;
-            //this.messageTextBox.ShowMessage(textArg, scb);
-            this.messageTextBox.ShowMessage(textArg, Brushes.Black);
+            this.messageTextBox.Dispatcher.Invoke(new Action(() => {
+                string textArg = string.Empty;
+                switch (messageArg)
+                {
+                    case DeviceDetectorMessage.IPEndPointError:
+                        textArg = "IP地址错误";
+                        break;
+                    case DeviceDetectorMessage.ConnectionError:
+                        textArg = "网络连接错误";
+                        break;
+                    default:
+                        textArg = "未定义的错误";
+                        break;
+                }
+                //SolidColorBrush scb = Brushes.Black;
+                //this.messageTextBox.ShowMessage(textArg, scb);
+                this.messageTextBox.ShowMessage(textArg, Brushes.Black);
+            }));
+            
         }
 
         public void ShowMessage(string textArg,WEErrorLevel errorArg)

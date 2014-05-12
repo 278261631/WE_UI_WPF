@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="26" d:DesignWidth="400">
+             d:DesignHeight="26" d:DesignWidth="400" Background="{x:Null}">
 	<UserControl.Resources>
 		<Storyboard x:Key="MessageShow">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(Brush.Opacity)" Storyboard.TargetName="textBoxMessage">
@@ -14,11 +14,13 @@
 		</Storyboard>
 	</UserControl.Resources>
 	<UserControl.Triggers>
-		<EventTrigger RoutedEvent="TextBoxBase.TextChanged" SourceName="textBoxMessage">
+        
+        <EventTrigger RoutedEvent="Label.TextInput" SourceName="textBoxMessage">
 			<BeginStoryboard x:Name="MessageShow_BeginStoryboard1" Storyboard="{StaticResource MessageShow}"/>
 		</EventTrigger>
+        
 	</UserControl.Triggers>
     <Grid>
-        <TextBox Name="textBoxMessage" Text="" VerticalAlignment="Center" IsTabStop="False" IsReadOnly="True" BorderBrush="{x:Null}" Background="{x:Null}" IsEnabled="False" IsUndoEnabled="False" BorderThickness="0" />
+        <Label Content="Label" Height="28" HorizontalAlignment="Left" Name="textBoxMessage" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
     </Grid>
 </UserControl>
