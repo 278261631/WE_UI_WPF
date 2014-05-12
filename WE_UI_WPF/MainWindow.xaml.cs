@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PnPDetectorDLL;
 
 namespace DVR_UI_WPF
 {
@@ -21,18 +22,18 @@ namespace DVR_UI_WPF
 		public MainWindow()
 		{
 			this.InitializeComponent();
-            for (int i = 0; i < 32; i++)
-            {
-                DeviceItem di = new DeviceItem(i+1);
+            //for (int i = 0; i < 32; i++)
+            //{
+            //    DeviceItem di = new DeviceItem(i+1);
 
-                //double marginLeft = (this.Width - 4 * di.Width) / 5;
-                //di.Margin = new Thickness(marginLeft, 5, 0, 5);
-                //di.Padding = new Thickness(0, 12, 0, 12);
+            //    //double marginLeft = (this.Width - 4 * di.Width) / 5;
+            //    //di.Margin = new Thickness(marginLeft, 5, 0, 5);
+            //    //di.Padding = new Thickness(0, 12, 0, 12);
 
-                di.HorizontalAlignment = HorizontalAlignment.Right;
-                di.DeviceID += di.DeviceID + i.ToString();
-                deviceListAllShow.Add(di);
-            }
+            //    di.HorizontalAlignment = HorizontalAlignment.Right;
+            //    di.DeviceID += di.DeviceID + i.ToString();
+            //    deviceListAllShow.Add(di);
+            //}
 			// 在此点下面插入创建对象所需的代码。
 		}
 
@@ -87,17 +88,25 @@ namespace DVR_UI_WPF
         /// <param name="deviceID"></param>
         /// <param name="deviceIndex">区间 0-31</param>
         /// <param name="devicePath"></param>
-        private void deviceConnected(string deviceID, int deviceIndex,string devicePath)
+        public void deviceConnected(DeviceEntity device)
         {
-            if (deviceIndex>-1 && deviceIndex< deviceListAllShow.Count)
-            {
-                this.deviceListAllShow[deviceIndex].DeviceID = deviceID;
-                this.deviceListAllShow[deviceIndex].DevicePath = devicePath;
-                this.deviceListAllShow[deviceIndex].IsConnected = true; 
-            }
+            //if (deviceIndex>-1 && deviceIndex< deviceListAllShow.Count)
+            //{
+            //    this.deviceListAllShow[deviceIndex].DeviceID = deviceID;
+            //    this.deviceListAllShow[deviceIndex].DevicePath = devicePath;
+            //    this.deviceListAllShow[deviceIndex].IsConnected = true; 
+            //}
+
+            DeviceItem di = new DeviceItem(0);
+            di.HorizontalAlignment = HorizontalAlignment.Right;
+            deviceListAllShow.Add(di);
+            InsertDeviceItem(di);
+
+
         }
 
-        private void deviceDisConnected(string deviceID, int deviceIndex, string devicePath)
+
+        public void deviceDisConnected(string deviceID, int deviceIndex, string devicePath)
         {
             if (deviceIndex>-1 && deviceIndex < deviceListAllShow.Count)
             {
@@ -111,9 +120,29 @@ namespace DVR_UI_WPF
         {
             Random rd = new Random(DateTime.Now.Millisecond);
             int rNum = rd.Next(-20, 50);
-            deviceConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
+            //deviceConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
             rNum = rd.Next(-20, 50);
             deviceDisConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
+        }
+
+        public void ShowMessage(DeviceDetectorMessage messageArg)
+        {
+            string textArg = string.Empty;
+            switch (messageArg)
+            {
+                case DeviceDetectorMessage.IPEndPointError:
+                    textArg = "IP地址错误";
+                    break;
+                case DeviceDetectorMessage.ConnectionError:
+                    textArg = "网络连接错误";
+                    break;
+                default:
+                    textArg = "未定义的错误";
+                    break;
+            }
+            //SolidColorBrush scb = Brushes.Black;
+            //this.messageTextBox.ShowMessage(textArg, scb);
+            this.messageTextBox.ShowMessage(textArg, Brushes.Black);
         }
 
         public void ShowMessage(string textArg,WEErrorLevel errorArg)
