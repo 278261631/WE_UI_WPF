@@ -4,7 +4,7 @@
 	x:Class="DVR_UI_WPF.MainWindow"
 	x:Name="Window"
 	Title="MainWindow"
-	Width="800" Height="640" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" xmlns:my="clr-namespace:DVR_UI_WPF" Loaded="Window_Loaded" Icon="/DVR_UI_WPF;component/images/USBIcon.png">
+	Width="800" Height="640" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" xmlns:my="clr-namespace:DVR_UI_WPF" Loaded="Window_Loaded" Icon="/DVR_UI_WPF;component/images/USBIcon.png" xmlns:my1="clr-namespace:RecordView">
     <Border BorderThickness="2" MouseLeftButtonDown="LayoutRoot_MouseLeftButtonDown" BorderBrush="#FF3399FF">
         <Border.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -28,14 +28,14 @@
             <Button Background="White" BorderBrush="{x:Null}" BorderThickness="0" Content="Test" Focusable="False" FontSize="18" FontStyle="Normal" FontWeight="Bold" Height="29" HorizontalAlignment="Right" IsEnabled="True" IsTabStop="False" Margin="0,0,62,0" Name="button_test" Opacity="0.8" Padding="0" VerticalAlignment="Top" Width="50" Click="button_test_Click" Grid.Column="1" />
             <Image Height="50" Margin="18,0,86,0" Name="image1" Stretch="Uniform" VerticalAlignment="Top" Source="/DVR_UI_WPF;component/images/welltra.PNG" />
 			<Border Grid.Row="2" BorderBrush="#FFB5B6B6" BorderThickness="0,0,1,0" >
-	            <ScrollViewer Grid.Row="2" x:Name="scrollViewer_WrapPanel" VerticalScrollBarVisibility="Hidden" Margin="0,0,0,0" BorderThickness="0" RenderTransformOrigin="0.5,0.5" >
+	            <ScrollViewer Grid.Row="2" x:Name="scrollViewer_WrapPanel" VerticalScrollBarVisibility="Hidden" Margin="0,0,0,0" BorderThickness="0" RenderTransformOrigin="0.5,0.5" Focusable="False">
 	            	<WrapPanel   x:Name="wrapPanel_DeviceList" TouchMove="wrapPanel_DeviceList_TouchMove" MouseWheel="wrapPanel_DeviceList_MouseWheel" />
 	            </ScrollViewer>
 			</Border>
 			<Label x:Name="Label_Settings" Content="设置" Margin="38.5,7.5,0,33" Grid.Row="1" FontSize="21.333" Padding="0" HorizontalAlignment="Left" Width="47" Foreground="#FF838383"/>
 			<Label x:Name="Label_Settings_Net" Content="网络参数" Margin="39.5,0,76.56,2" Grid.Row="1" FontSize="14.667" Padding="0" Foreground="#FF838383" Height="26.5" VerticalAlignment="Bottom"/>
 			<Label x:Name="Label_Settings_ConnectType" Content="连接类型" Margin="0,0,-5.44,2" Grid.Row="1" FontSize="14.667" Padding="0" Foreground="#FF838383" Height="26.5" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="71"/>
-			<Label x:Name="Label_Message" Content="输出信息" Grid.Column="1" HorizontalAlignment="Left" Margin="-179.06,4,0,13" Grid.Row="3" Width="409"/>
+            <my1:MessageText Grid.ColumnSpan="2" Grid.Row="3" Height="36" HorizontalAlignment="Left" Margin="0,12,0,0" x:Name="messageTextBox" VerticalAlignment="Top" Width="768" />
         </Grid>
 	</Border>
 </Window>

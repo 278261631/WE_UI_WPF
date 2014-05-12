@@ -115,5 +115,38 @@ namespace DVR_UI_WPF
             rNum = rd.Next(-20, 50);
             deviceDisConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
         }
+
+        public void ShowMessage(string textArg,WEErrorLevel errorArg)
+        {
+            SolidColorBrush scb = Brushes.Black;
+            switch (errorArg)
+            {
+                case WEErrorLevel.Success:
+                    scb = Brushes.DarkOliveGreen;
+                    break;
+                case WEErrorLevel.Message:
+                    scb = Brushes.Black;
+                    break;
+                case WEErrorLevel.Warnning:
+                    scb = Brushes.LightGoldenrodYellow;
+                    break;
+                case WEErrorLevel.Error:
+                    scb = Brushes.DarkRed;
+                    break;
+                default:
+                    break;
+            }
+            this.messageTextBox.ShowMessage(textArg,scb);
+        }
 	}
+
+    public enum WEErrorLevel
+	{
+        Success,
+        Message,
+        Warnning,
+        Error,
+	}
+
+
 }
