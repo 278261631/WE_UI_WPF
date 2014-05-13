@@ -112,6 +112,7 @@ namespace DVR_UI_WPF
 
             //--- Check if Exist
             //clone entity to own list
+            ShowMessage(DeviceDetectorMessage.DeviceConnected);
             
 
             InsertDeviceItem(device);
