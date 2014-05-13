@@ -113,6 +113,9 @@ namespace DVR_UI_WPF
             //--- Check if Exist
             //clone entity to own list
             ShowMessage(DeviceDetectorMessage.DeviceConnected);
+
+            device.onDeviceMessage += this.ShowMessage;
+            device.GetInitDevice();
             
 
             InsertDeviceItem(device);
@@ -187,6 +190,14 @@ namespace DVR_UI_WPF
                     break;
             }
             this.messageTextBox.ShowMessage(textArg,scb);
+        }
+
+        public void ShowMessage(string textArg)
+        {
+            this.messageTextBox.Dispatcher.Invoke(new Action(() =>
+            {
+                this.messageTextBox.ShowMessage(textArg, Brushes.Black);
+            }));
         }
 	}
 
