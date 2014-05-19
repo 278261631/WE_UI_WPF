@@ -4,7 +4,7 @@
 	x:Class="DVR_UI_WPF.MainWindow"
 	x:Name="Window"
 	Title="MainWindow"
-	Width="800" Height="640" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" xmlns:my="clr-namespace:DVR_UI_WPF" Loaded="Window_Loaded" Icon="/DVR_UI_WPF;component/images/USBIcon.png" xmlns:my1="clr-namespace:RecordView">
+	Width="800" Height="640" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" xmlns:my="clr-namespace:DVR_UI_WPF" Loaded="Window_Loaded" Icon="/DVR_UI_WPF;component/images/USBIcon.png" xmlns:my1="clr-namespace:RecordView" Closing="Window_Closing">
     <Border BorderThickness="2" MouseLeftButtonDown="LayoutRoot_MouseLeftButtonDown" BorderBrush="#FF3399FF">
         <Border.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -25,7 +25,6 @@
                 <RowDefinition Height="48" />
             </Grid.RowDefinitions>
             <Button Content="-" Height="29" Margin="0,0,6,0" Name="button_min" VerticalAlignment="Top" HorizontalAlignment="Right" Width="50" FontWeight="Bold" FontSize="18" FontStyle="Normal" Click="button_min_Click" IsTabStop="False" Background="White" Opacity="0.8" MouseEnter="button_min_MouseEnter" MouseLeave="button_min_MouseLeave" BorderBrush="{x:Null}" IsEnabled="True" Padding="0" BorderThickness="0" Focusable="False" Grid.Column="1" />
-            <Button Background="White" BorderBrush="{x:Null}" BorderThickness="0" Content="Test" Focusable="False" FontSize="18" FontStyle="Normal" FontWeight="Bold" Height="29" HorizontalAlignment="Right" IsEnabled="True" IsTabStop="False" Margin="0,0,62,0" Name="button_test" Opacity="0.8" Padding="0" VerticalAlignment="Top" Width="50" Click="button_test_Click" Grid.Column="1" />
             <Image Height="50" Margin="18,0,86,0" Name="image1" Stretch="Uniform" VerticalAlignment="Top" Source="/DVR_UI_WPF;component/images/welltra.PNG" />
 			<Border Grid.Row="2" BorderBrush="#FFB5B6B6" BorderThickness="0,0,1,0" >
 	            <ScrollViewer Grid.Row="2" x:Name="scrollViewer_WrapPanel" VerticalScrollBarVisibility="Hidden" Margin="0,0,0,0" BorderThickness="0" RenderTransformOrigin="0.5,0.5" Focusable="False">

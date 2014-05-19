@@ -19,6 +19,8 @@ namespace DVR_UI_WPF
 	public partial class MainWindow : Window
 	{
         List<DeviceItem> deviceListAllShow = new List<DeviceItem>();
+        public event EventHandler onWindowsDispose;
+
 		public MainWindow()
 		{
 			this.InitializeComponent();
@@ -52,15 +54,31 @@ namespace DVR_UI_WPF
 
         //private int InsertDeviceItem(DeviceItem di)
         //private void InsertDeviceItem(DeviceItem di)
+        /// <summary>
+        /// 历史连接列表：key DeviceID  Value DeviceEntity
+        /// </summary>
+        Dictionary<string, DeviceEntity> deviceDic = new Dictionary<string, DeviceEntity>();
         private void InsertDeviceItem(DeviceEntity de)
         {
             //return this.wrapPanel_DeviceList.Children.Add(di);
-            this.wrapPanel_DeviceList.Dispatcher.Invoke(new Action(() => {
-                DeviceItem di = new DeviceItem(0);
-                di.HorizontalAlignment = HorizontalAlignment.Right;
-                deviceListAllShow.Add(di);
-                this.wrapPanel_DeviceList.Children.Add(di);
-            }));
+
+            if (!deviceDic.ContainsKey(de.DeviceID))
+            {
+                this.wrapPanel_DeviceList.Dispatcher.Invoke(new Action(() =>
+                {
+                    DeviceItem di = new DeviceItem(0);
+                    di.HorizontalAlignment = HorizontalAlignment.Right;
+                    deviceListAllShow.Add(di);
+                    di.DeviceID = de.DeviceID;
+
+                    this.wrapPanel_DeviceList.Children.Add(di);
+                }));
+            }
+            else
+            {
+
+            }
+
         }
 
         private void wrapPanel_DeviceList_TouchMove(object sender, TouchEventArgs e)
@@ -114,14 +132,15 @@ namespace DVR_UI_WPF
             //clone entity to own list
             ShowMessage(DeviceDetectorMessage.DeviceConnected);
 
-            device.onDeviceMessage += this.ShowMessage;
-            device.GetInitDevice();
-            
+            device.onDeviceMessage +=  this.ShowMessage;
+            device.onDeviceInitFinished += new EventHandler(DeviceInitFinished);
+            //device.GetInitDevice();
+        }
 
-            InsertDeviceItem(device);
-            //初始化连接只显示连接实时信息
-            //不显示图形，知道设备初始访问结束才显示（获取ID 版本等 、 基本通信校验）
 
+        void DeviceInitFinished(object sender,EventArgs e)
+        {
+            InsertDeviceItem(sender as DeviceEntity);
         }
 
 
@@ -157,6 +176,9 @@ namespace DVR_UI_WPF
                         break;
                     case DeviceDetectorMessage.ConnectionError:
                         textArg = "网络连接错误";
+                        break;
+                    case DeviceDetectorMessage.DeviceConnected:
+                        textArg = "已经连接";
                         break;
                     default:
                         textArg = "未定义的错误";
@@ -198,6 +220,14 @@ namespace DVR_UI_WPF
             {
                 this.messageTextBox.ShowMessage(textArg, Brushes.Black);
             }));
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.onWindowsDispose!=null)
+            {
+                this.onWindowsDispose(null, null);
+            }
         }
 	}
 
