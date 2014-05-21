@@ -72,11 +72,28 @@ namespace DVR_UI_WPF
                     di.DeviceID = de.DeviceID;
 
                     this.wrapPanel_DeviceList.Children.Add(di);
+                    deviceDic.Add(de.DeviceID, de);
+                    di.IsConnected = true;
                 }));
             }
             else
             {
+                deviceDic[de.DeviceID] = de;
+                wrapPanel_DeviceList.Dispatcher.Invoke(new Action(() =>
+                {
+                    foreach (var item in wrapPanel_DeviceList.Children)
+                    {
+                        DeviceItem itemDI = item as DeviceItem;
+                        if (itemDI.DeviceID == de.DeviceID)
+                        {
+                            itemDI.IsConnected = true;
+                            break;
+                        }
+                    }
+                }));
 
+
+                
             }
 
         }
@@ -116,40 +133,60 @@ namespace DVR_UI_WPF
         /// <param name="devicePath"></param>
         public void deviceConnected(DeviceEntity device)
         {
-            //if (deviceIndex>-1 && deviceIndex< deviceListAllShow.Count)
-            //{
-            //    this.deviceListAllShow[deviceIndex].DeviceID = deviceID;
-            //    this.deviceListAllShow[deviceIndex].DevicePath = devicePath;
-            //    this.deviceListAllShow[deviceIndex].IsConnected = true; 
-            //}
-
-            //DeviceItem di = new DeviceItem(0);
-            //di.HorizontalAlignment = HorizontalAlignment.Right;
-            //deviceListAllShow.Add(di);
-            //InsertDeviceItem(di);
-
-            //--- Check if Exist
-            //clone entity to own list
             ShowMessage(DeviceDetectorMessage.DeviceConnected);
 
             device.onDeviceMessage +=  this.ShowMessage;
             device.onDeviceInitFinished += new EventHandler(DeviceInitFinished);
-            //device.GetInitDevice();
+            device.GetVersion();
         }
 
 
         void DeviceInitFinished(object sender,EventArgs e)
         {
             InsertDeviceItem(sender as DeviceEntity);
+            DeviceEntity device = sender as DeviceEntity;
+            if (device!=null)
+            {
+                device.GetFileInfo();
+            }
         }
 
 
         public void deviceDisConnected(DeviceEntity device)
         {
-            //if (this.deviceListAllShow.)
-            //{
-            //    this.deviceListAllShow[deviceIndex].IsConnected = false;
-            //}
+            if (!deviceDic.ContainsKey(device.DeviceID))
+            {
+                //this.wrapPanel_DeviceList.Dispatcher.Invoke(new Action(() =>
+                //{
+                //    DeviceItem di = new DeviceItem(0);
+                //    di.HorizontalAlignment = HorizontalAlignment.Right;
+                //    deviceListAllShow.Add(di);
+                //    di.DeviceID = device.DeviceID;
+
+                //    this.wrapPanel_DeviceList.Children.Add(di);
+                //    deviceDic.Add(device.DeviceID, device);
+                //    di.IsConnected = true;
+                //}));
+            }
+            else
+            {
+                wrapPanel_DeviceList.Dispatcher.Invoke(new Action(() =>
+                {
+                    foreach (var item in wrapPanel_DeviceList.Children)
+                    {
+                        DeviceItem itemDI = item as DeviceItem;
+                        if (itemDI.DeviceID == device.DeviceID)
+                        {
+
+                            itemDI.IsConnected = false;
+                            break;
+                        }
+                    }
+                }));
+
+
+            }
+            ShowMessage(DeviceDetectorMessage.DeviceDisConnected);
 
 
         }
@@ -180,8 +217,12 @@ namespace DVR_UI_WPF
                     case DeviceDetectorMessage.DeviceConnected:
                         textArg = "已经连接";
                         break;
+                    case DeviceDetectorMessage.DeviceDisConnected:
+                        textArg="已断开";
+                        break;
+
                     default:
-                        textArg = "未定义的错误";
+                        textArg = "未定义的信息";
                         break;
                 }
                 //SolidColorBrush scb = Brushes.Black;

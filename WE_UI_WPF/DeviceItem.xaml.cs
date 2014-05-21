@@ -41,7 +41,7 @@ namespace DVR_UI_WPF
                     this.ellipse_isConnected.Fill = isConnected ? Brushes.LightGreen : Brushes.Gray;
                     if (!value)
                     {
-                        this.textBlock_DeviceID.Text = defaultDeviceID;
+                        //this.textBlock_DeviceID.Text = defaultDeviceID;
                         //this.textBlock_DevicePath.Text = defaultDevicePath;
                     }
             }

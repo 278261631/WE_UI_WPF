@@ -21,6 +21,6 @@
         
 	</UserControl.Triggers>
     <Grid>
-        <Label Content="Label" Height="28" HorizontalAlignment="Left" Name="textBoxMessage" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
+        <Label Content="..." Height="28" HorizontalAlignment="Left" Name="textBoxMessage" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
     </Grid>
 </UserControl>
