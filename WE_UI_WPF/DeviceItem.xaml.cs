@@ -21,7 +21,7 @@ namespace DVR_UI_WPF
     {
 
         private string defaultDeviceID = "未连接";
-        private string defaultDevicePath = "无路径";
+        //private string defaultDevicePath = "无路径";
         private string defaultIndex = "00";
         public DeviceItem(int index)
         {

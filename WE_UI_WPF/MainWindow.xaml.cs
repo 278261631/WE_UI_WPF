@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PnPDetectorDLL;
+using System.IO;
 
 namespace DVR_UI_WPF
 {
@@ -133,11 +134,85 @@ namespace DVR_UI_WPF
         /// <param name="devicePath"></param>
         public void deviceConnected(DeviceEntity device)
         {
-            ShowMessage(DeviceDetectorMessage.DeviceConnected);
+            ShowMessage(DeviceDetectorMessage.DeviceConnected,string.Empty);
 
             device.onDeviceMessage +=  this.ShowMessage;
             device.onDeviceInitFinished += new EventHandler(DeviceInitFinished);
+            //device.onDeviceDataIn += new DeviceEntity.DeviceDataIn(device_onDeviceDataIn);
+            device.onDeviceGetFileInfoFinished += new EventHandler(device_onDeviceGetFileInfoFinished);
+            device.onDeviceGetFilePartFinished += new EventHandler(device_onDeviceGetFilePartFinished);
+            device.onDeviceGetFileFinished += new EventHandler(device_onDeviceGetFileFinished);
+            //device.onDeviceInitFinished += new EventHandler(device_onDeviceInitFinished);
+
             device.GetVersion();
+        }
+
+        /// <summary>
+        /// 这里需要保存一个固定的数据路径 用ClickOnece运行路径会变化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void device_onDeviceGetFileFinished(object sender, EventArgs e)
+        {
+            //复制文件
+            DeviceEntity device = sender as DeviceEntity;
+            if (device != null)
+            {
+                string deviceFilePathRoot = System.IO.Path.Combine(Environment.CurrentDirectory, "DataFiles", device.DeviceID);
+                if (!Directory.Exists(deviceFilePathRoot))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(deviceFilePathRoot);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        // UI 异常处理
+                        throw;
+                    }
+                    try
+                    {
+                        File.Move(device.tempFilePath, System.IO.Path.Combine(deviceFilePathRoot, device.ReceiveFileName));
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                }
+
+            }
+
+        }
+
+        void device_onDeviceInitFinished(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void device_onDeviceGetFilePartFinished(object sender, EventArgs e)
+        {
+            DeviceEntity device = sender as DeviceEntity;
+            if (device != null)
+            {
+                device.GetFileByte(device.NextPartWriteCount, device.ReceiveFileName);
+            }
+        }
+
+        void device_onDeviceGetFileInfoFinished(object sender, EventArgs e)
+        {
+            DeviceEntity device = sender as DeviceEntity;
+            if (device!=null)
+            {
+                device.GetFileByte(device.NextPartWriteCount, device.ReceiveFileName);
+            }
+        }
+
+        void device_onDeviceDataIn(byte[] dataIn)
+        {
+            throw new NotImplementedException();
         }
 
 
@@ -186,7 +261,7 @@ namespace DVR_UI_WPF
 
 
             }
-            ShowMessage(DeviceDetectorMessage.DeviceDisConnected);
+            ShowMessage(DeviceDetectorMessage.DeviceDisConnected,string.Empty);
 
 
         }
@@ -202,7 +277,7 @@ namespace DVR_UI_WPF
             //deviceDisConnected(DateTime.Now.Millisecond.ToString(), rNum, DateTime.Now.Second.ToString());
         }
 
-        public void ShowMessage(DeviceDetectorMessage messageArg)
+        public void ShowMessage(DeviceDetectorMessage messageArg,string errorMessage)
         {
             this.messageTextBox.Dispatcher.Invoke(new Action(() => {
                 string textArg = string.Empty;
@@ -225,6 +300,7 @@ namespace DVR_UI_WPF
                         textArg = "未定义的信息";
                         break;
                 }
+                textArg += ":"+errorMessage;
                 //SolidColorBrush scb = Brushes.Black;
                 //this.messageTextBox.ShowMessage(textArg, scb);
                 this.messageTextBox.ShowMessage(textArg, Brushes.Black);
