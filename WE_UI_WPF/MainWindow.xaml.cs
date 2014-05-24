@@ -112,19 +112,10 @@ namespace DVR_UI_WPF
 
         private void button_min_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            
         }
 
-        private void button_min_MouseEnter(object sender, MouseEventArgs e)
-        {
-            this.button_min.Opacity = 1;
-        }
-
-        private void button_min_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.button_min.Opacity = 0.8;
-        }
-
+        
 
         /// <summary>
         /// 
@@ -143,8 +134,15 @@ namespace DVR_UI_WPF
             device.onDeviceGetFilePartFinished += new EventHandler(device_onDeviceGetFilePartFinished);
             device.onDeviceGetFileFinished += new EventHandler(device_onDeviceGetFileFinished);
             //device.onDeviceInitFinished += new EventHandler(device_onDeviceInitFinished);
+            device.onDeviceNetLost += new EventHandler(device_onDeviceNetLost);
 
-            device.GetVersion();
+
+            device.SendGetVersion();
+        }
+
+        void device_onDeviceNetLost(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -197,7 +195,7 @@ namespace DVR_UI_WPF
             DeviceEntity device = sender as DeviceEntity;
             if (device != null)
             {
-                device.GetFileByte(device.NextPartWriteCount, device.ReceiveFileName);
+                device.SendGetFileByte(device.NextPartWriteCount, device.ReceiveFileName);
             }
         }
 
@@ -206,7 +204,7 @@ namespace DVR_UI_WPF
             DeviceEntity device = sender as DeviceEntity;
             if (device!=null)
             {
-                device.GetFileByte(device.NextPartWriteCount, device.ReceiveFileName);
+                device.SendGetFileByte(device.NextPartWriteCount, device.ReceiveFileName);
             }
         }
 
@@ -222,7 +220,7 @@ namespace DVR_UI_WPF
             DeviceEntity device = sender as DeviceEntity;
             if (device!=null)
             {
-                device.GetFileInfo();
+                device.SendGetFileInfo();
             }
         }
 
@@ -346,6 +344,29 @@ namespace DVR_UI_WPF
                 this.onWindowsDispose(null, null);
             }
         }
+
+
+        private void label_Close_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton.Equals(MouseButtonState.Pressed))
+            {
+                this.Close();
+            }
+        }
+
+        private void label_min_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton.Equals(MouseButtonState.Pressed))
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+            
+        }
+
+        //private void button_min_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        //{
+        //    // 在此处添加事件处理程序实现。
+        //}
 	}
 
     public enum WEErrorLevel
