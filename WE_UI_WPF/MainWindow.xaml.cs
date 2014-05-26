@@ -363,6 +363,22 @@ namespace DVR_UI_WPF
             
         }
 
+        private void label_Menu_SetSSID_PWD_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (var item in this.deviceDic.Values)
+            {
+                item.SendSetWifiSSID_PWD();
+            }
+        }
+
+        private void label_Menue_SetTime_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (var item in this.deviceDic.Values)
+            {
+                item.SendSetTime();
+            }
+        }
+
         //private void button_min_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         //{
         //    // 在此处添加事件处理程序实现。
